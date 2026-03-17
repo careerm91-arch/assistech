@@ -1,7 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Assistech Finder</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+padding:20px;
+}
+
+#appContent{
+display:none;
+}
+
+input, button, select{
+padding:10px;
+margin:10px;
+font-size:16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+<h2>🔒 Premium Access</h2>
+<input type="password" id="password" placeholder="Enter Password">
+<br>
+<button onclick="checkPassword()">Unlock</button>
+<p id="error" style="color:red;"></p>
+</div>
+
+<!-- APP -->
+<div id="appContent">
+
+<h2>ASSISTECH FINDER</h2>
+
+<select id="disability">
+<option>Vision</option>
+<option>Hearing</option>
+<option>Mobility</option>
+<option>Speech</option>
+<option>Cognitive</option>
+</select>
+
+<br>
+
+<select id="task">
+<option>Reading</option>
+<option>Communication</option>
+<option>Navigation</option>
+<option>Phone Control</option>
+<option>Learning</option>
+</select>
+
+<br>
+
+<button onclick="showResult()">Find Assistive Apps</button>
+
+<div id="result"></div>
+
+</div>
+
 <script>
 
+// LOGIN
 function checkPassword(){
-
 var pass = document.getElementById("password").value;
 
 if(pass === "TEST123"){
@@ -10,54 +77,24 @@ document.getElementById("appContent").style.display = "block";
 }else{
 document.getElementById("error").innerText = "Wrong password!";
 }
-
 }
 
-async function loadData(){
+// TEMP TEST (NO SHEET)
+function showResult(){
 
-try{
+var d = document.getElementById("disability").value;
+var t = document.getElementById("task").value;
 
-let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTn-4f1fSZBWvmjwehUBYlrxgYF8lbRqs3dmsTG8mP8rYI1L6wIjpg7ARICCbBChBYayp0YMxhCntPY/pub?output=csv";
-
-let response = await fetch(url);
-let data = await response.text();
-
-let rows = data.trim().split("\n").map(r => r.split(","));
-
-let d = document.getElementById("disability").value;
-let t = document.getElementById("task").value;
-
-let output = "";
-
-rows.forEach((r, index) => {
-
-if(index === 0) return; // skip header
-
-if(r[0] == d && r[1] == t){
-
-let apps = r.slice(2);
-
-let top3 = apps.slice(0,3);
-let more = apps.slice(3);
-
-output =
-"<b>Top 3 Apps:</b><br>" + top3.join("<br>") +
-"<br><br><b>More Apps:</b><br>" + more.join("<br>");
-}
-
-});
-
-if(output==""){
-output="No results found.";
-}
-
-document.getElementById("result").innerHTML = output;
-
-}catch(error){
-document.getElementById("result").innerHTML = "Error loading data.";
-console.log(error);
+if(d=="Vision" && t=="Reading"){
+document.getElementById("result").innerHTML =
+"<b>Top 3 Apps:</b><br>Lookout<br>Seeing AI<br>Be My Eyes";
+}else{
+document.getElementById("result").innerHTML="No results found";
 }
 
 }
 
 </script>
+
+</body>
+</html>
