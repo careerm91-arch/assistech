@@ -80,19 +80,55 @@ document.getElementById("error").innerText = "Wrong password!";
 }
 
 // TEMP TEST (NO SHEET)
-function showResult(){
 
-var d = document.getElementById("disability").value;
-var t = document.getElementById("task").value;
+async function showResult(){
 
-if(d=="Vision" && t=="Reading"){
-document.getElementById("result").innerHTML =
-"<b>Top 3 Apps:</b><br>Lookout<br>Seeing AI<br>Be My Eyes";
-}else{
-document.getElementById("result").innerHTML="No results found";
+try{
+
+let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTn-4f1fSZBWvmjwehUBYlrxgYF8lbRqs3dmsTG8mP8rYI1L6wIjpg7ARICCbBChBYayp0YMxhCntPY/pub?output=csv";
+
+let response = await fetch(url);
+let data = await response.text();
+
+let rows = data.trim().split("\n").map(r => r.split(","));
+
+let d = document.getElementById("disability").value;
+let t = document.getElementById("task").value;
+
+let output = "";
+
+rows.forEach((r, index) => {
+
+if(index === 0) return; // skip header
+
+if(r[0] == d && r[1] == t){
+
+let apps = r.slice(2);
+
+let top3 = apps.slice(0,3);
+let more = apps.slice(3);
+
+output =
+"<b>Top 3 Apps:</b><br>" + top3.join("<br>") +
+"<br><br><b>More Apps:</b><br>" + more.join("<br>");
+}
+
+});
+
+if(output==""){
+output="No results found.";
+}
+
+document.getElementById("result").innerHTML = output;
+
+}catch(error){
+document.getElementById("result").innerHTML = "Error loading data.";
+console.log(error);
 }
 
 }
+
+
 
 </script>
 
