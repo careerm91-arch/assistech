@@ -63,6 +63,35 @@ font-size:16px;
 
 <div id="result"></div>
 
+<div id="paymentSection" style="display:none;">
+<h3>🔒 Unlock Full Results</h3>
+
+<p>Subscription:</p>
+<p>🇮🇳 India: ₹500/year</p>
+<p>🌍 Others: $10/year</p>
+
+<h4>Pbridge Consultancy</h4>
+<img src="YOUR_LOGO_LINK" width="120"><br><br>
+
+<!-- QR Code -->
+<img src="YOUR_QR_LINK" width="200"><br><br>
+
+<!-- Razorpay -->
+<a href="https://rzp.io/l/YOUR_LINK" target="_blank">
+<button>Pay via Razorpay</button>
+</a>
+
+<br><br>
+
+<!-- PayPal -->
+<a href="https://www.paypal.com/ncp/payment/YOUR_LINK" target="_blank">
+<button>Pay via PayPal</button>
+</a>
+
+<br><br>
+
+<button onclick="unlockAccess()">I Have Paid</button>
+
 </div>
 
 <script>
@@ -81,12 +110,14 @@ document.getElementById("error").innerText = "Wrong password!";
 
 // TEMP TEST (NO SHEET)
 
+<script>
+
+let paidUser = false;
+
 async function showResult(){
 
-try{
-
 let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
-                                                    
+
 let response = await fetch(url);
 let data = await response.text();
 
@@ -99,7 +130,7 @@ let output = "";
 
 rows.forEach((r, index) => {
 
-if(index === 0) return; // skip header
+if(index === 0) return;
 
 if(r[0] == d && r[1] == t){
 
@@ -108,9 +139,14 @@ let apps = r.slice(2);
 let top3 = apps.slice(0,3);
 let more = apps.slice(3);
 
-output =
-"<b>Top 3 Apps:</b><br>" + top3.join("<br>") +
-"<br><br><b>More Apps:</b><br>" + more.join("<br>");
+output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
+
+if(paidUser){
+output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
+}else{
+document.getElementById("paymentSection").style.display = "block";
+}
+
 }
 
 });
@@ -121,14 +157,13 @@ output="No results found.";
 
 document.getElementById("result").innerHTML = output;
 
-}catch(error){
-document.getElementById("result").innerHTML = "Error loading data.";
-console.log(error);
 }
 
+function unlockAccess(){
+paidUser = true;
+document.getElementById("paymentSection").style.display = "none";
+showResult();
 }
-
-
 
 </script>
 
