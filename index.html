@@ -28,9 +28,13 @@ font-size:16px;
 <!-- LOGIN -->
 <div id="loginBox">
 <h2>🔒 Premium Access</h2>
+
 <input type="password" id="password" placeholder="Enter Password">
-<br>
+
+<br><br>
+
 <button onclick="checkPassword()">Unlock</button>
+
 <p id="error" style="color:red;"></p>
 </div>
 
@@ -65,46 +69,16 @@ font-size:16px;
 
 <div id="paymentSection" style="display:none;">
 <h3>🔒 Unlock Full Results</h3>
-
-<p>Subscription:</p>
-<p>🇮🇳 India: ₹500/year</p>
-<p>🌍 Others: $10/year</p>
-
-<h4>Pbridge Consultancy</h4>
-<img src="YOUR_LOGO_LINK" width="120"><br><br>
-
-<!-- QR Code -->
-<img src="YOUR_QR_LINK" width="200"><br><br>
-
-<!-- Razorpay -->
-<a href="https://rzp.io/l/YOUR_LINK" target="_blank">
-<button>Pay via Razorpay</button>
-</a>
-
-<br><br>
-
-<!-- PayPal -->
-<a href="https://www.paypal.com/ncp/payment/YOUR_LINK" target="_blank">
-<button>Pay via PayPal</button>
-</a>
-
-<br><br>
-
+<p>Subscription: ₹500 / $10</p>
 <button onclick="unlockAccess()">I Have Paid</button>
+</div>
 
 </div>
 
 <script>
 
-// LOGIN
-<script>
-
-try{
-
+// LOGIN (WORKING)
 function checkPassword(){
-
-alert("Button clicked");
-
 var pass = document.getElementById("password").value.trim();
 
 if(pass === "TEST123"){
@@ -113,47 +87,23 @@ document.getElementById("appContent").style.display = "block";
 }else{
 document.getElementById("error").innerText = "Wrong password!";
 }
-
 }
 
-}catch(e){
-console.log(e);
-}
-
-</script>
-
-// TEMP TEST (NO SHEET)
-
-<script>
-
+// PAYMENT FLAG
 let paidUser = false;
 
-async function showResult(){
+// SIMPLE RESULT (NO SHEET FOR NOW)
+function showResult(){
 
-let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
+var d = document.getElementById("disability").value;
+var t = document.getElementById("task").value;
 
-let response = await fetch(url);
-let data = await response.text();
+if(d=="Vision" && t=="Reading"){
 
-let rows = data.trim().split("\n").map(r => r.split(","));
+let top3 = ["Lookout","Seeing AI","Be My Eyes"];
+let more = ["Voice Dream Reader","Envision AI"];
 
-let d = document.getElementById("disability").value;
-let t = document.getElementById("task").value;
-
-let output = "";
-
-rows.forEach((r, index) => {
-
-if(index === 0) return;
-
-if(r[0] == d && r[1] == t){
-
-let apps = r.slice(2);
-
-let top3 = apps.slice(0,3);
-let more = apps.slice(3);
-
-output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
+let output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
 
 if(paidUser){
 output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
@@ -161,18 +111,15 @@ output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
 document.getElementById("paymentSection").style.display = "block";
 }
 
-}
-
-});
-
-if(output==""){
-output="No results found.";
-}
-
 document.getElementById("result").innerHTML = output;
 
+}else{
+document.getElementById("result").innerHTML = "No results found.";
 }
 
+}
+
+// UNLOCK
 function unlockAccess(){
 paidUser = true;
 document.getElementById("paymentSection").style.display = "none";
