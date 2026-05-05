@@ -55,17 +55,55 @@ font-size:16px;
 <script>
 
 // SIMPLE RESULT FUNCTION (TEST FIRST)
-function showResult(){
+<script>
+async function showResult(){
+
+try{
+
+let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
+let response = await fetch(url);
+let data = await response.text();
+
+let rows = data.trim().split("\n").map(r => r.split(","));
 
 let d = document.getElementById("disability").value;
 let t = document.getElementById("task").value;
 
-document.getElementById("result").innerHTML =
-"Showing results for: " + d + " - " + t;
+let output = "";
 
-speak("Showing results for " + d + " " + t);
+rows.forEach((r, index) => {
+
+if(index === 0) return;
+
+if(r[0].trim().toLowerCase() === d.toLowerCase() &&
+   r[1].trim().toLowerCase() === t.toLowerCase()){
+
+let apps = r.slice(2);
+
+output = "<b>Apps:</b><br>" + apps.join("<br>");
+
 }
 
+});
+
+if(output==""){
+output="No results found.";
+}
+
+document.getElementById("result").innerHTML = output;
+
+// 🔊 Voice
+speak("Showing results for " + d + " " + t);
+
+}catch(error){
+
+document.getElementById("result").innerHTML = "Error loading data.";
+console.log(error);
+
+}
+
+}
+</script>
 // VOICE INPUT
 function startVoice(){
 
