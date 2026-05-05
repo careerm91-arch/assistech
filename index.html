@@ -134,11 +134,13 @@ document.getElementById("error").innerText = "Wrong password!";
 let paidUser = false;
 
 // FETCH FROM GOOGLE SHEET CSV
+<script>
+
 async function showResult(){
 
 try{
 
-let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
+let url = "PASTE_YOUR_CSV_LINK_HERE";
 
 let response = await fetch(url);
 let data = await response.text();
@@ -154,7 +156,6 @@ rows.forEach((r, index) => {
 
 if(index === 0) return;
 
-// MATCH DATA
 if(r[0] == d && r[1] == t){
 
 let apps = r.slice(2);
@@ -162,10 +163,8 @@ let apps = r.slice(2);
 let top3 = apps.slice(0,3);
 let more = apps.slice(3);
 
-// SHOW TOP 3
 output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
-speak("Showing results for " + d + " " + t);
-// IF PAID → SHOW MORE
+
 if(paidUser){
 output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
 }else{
@@ -173,6 +172,28 @@ document.getElementById("paymentSection").style.display = "block";
 }
 
 }
+
+});
+
+if(output==""){
+output="No results found.";
+}
+
+document.getElementById("result").innerHTML = output;
+
+// ✅ VOICE FEEDBACK
+speak("Showing results for " + d + " " + t);
+
+}catch(error){
+
+document.getElementById("result").innerHTML = "Error loading data.";
+console.log(error);
+
+}
+
+}
+
+</script>
 <script>
 
 // VOICE RECOGNITION
