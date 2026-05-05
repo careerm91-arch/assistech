@@ -1,1 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Assistech Finder</title>
 
+<style>
+body{
+font-family: Arial;
+text-align:center;
+padding:20px;
+background:#f5f5f5;
+}
+
+#appContent{
+display:none;
+}
+
+input, button, select{
+padding:10px;
+margin:10px;
+font-size:16px;
+}
+
+button{
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+#result{
+margin-top:20px;
+background:white;
+padding:15px;
+border-radius:10px;
+}
+
+#paymentSection{
+background:#fff3cd;
+padding:15px;
+border-radius:10px;
+margin-top:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+<h2>🔒 Premium Access</h2>
+<input type="password" id="password" placeholder="Enter Password"><br>
+<button onclick="checkPassword()">Unlock</button>
+<p id="error" style="color:red;"></p>
+</div>
+
+<!-- APP -->
+<div id="appContent">
+
+<h2>ASSISTECH FINDER</h2>
+
+<select id="disability">
+<option>Vision</option>
+<option>Hearing</option>
+<option>Mobility</option>
+<option>Speech</option>
+<option>Cognitive</option>
+</select>
+
+<br>
+
+<select id="task">
+<option>Reading</option>
+<option>Communication</option>
+<option>Navigation</option>
+<option>Phone Control</option>
+<option>Learning</option>
+</select>
+
+<br>
+
+<!-- 🎤 VOICE BUTTON -->
+<button onclick="startVoice()">🎤 Speak</button>
+<p id="voiceStatus"></p>
+
+<br>
+
+<button onclick="showResult()">Find Assistive Apps</button>
+
+<div id="result"></div>
+
+<div id="paymentSection" style="display:none;">
+<h3>🔒 Unlock Full Results</h3>
+<p>After payment, contact Pbridge Consultancy for access.</p>
+<button onclick="unlockAccess()">I Have Paid</button>
+</div>
+
+</div>
+
+<script>
+
+// LOGIN
+function checkPassword(){
+var pass = document.getElementById("password").value.trim();
+
+if(pass === "TEST123" || pass === "ASSISTECH500"){
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("appContent").style.display = "block";
+}else{
+document.getElementById("error").innerText = "Wrong password!";
+}
+}
+
+// PAYMENT FLAG
+let paidUser = false;
+
+// FETCH DATA
+async function showResult(){
+
+try{
+
+let url = "PASTE_YOUR_CSV_LINK_HERE";
+
+let response = await fetch(url);
+let data = await response.text();
+
+let rows = data.trim().split("\n").map(r => r.split(","));
+
+let d = document.getElementById("disability").value;
+let t = document.getElementById("task").value;
+
+let output = "";
+
+rows.forEach((r, index) => {
+
+if(index === 0) return;
+
+if(r[0] == d && r[1] == t){
+
+let apps = r.slice(2);
+
+let top3 = apps.slice(0,3);
+let more = apps.slice(3);
+
+output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
+
+if(paidUser){
+output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
+}else{
+document.getElementById("paymentSection").style.display = "block";
+}
+
+}
+
+});
+
+if(output==""){
+output="No results found.";
+}
+
+document.getElementById("result").innerHTML = output;
+
+// 🔊 SPEAK
+speak("Showing results for " + d + " " + t);
+
+}catch(error){
+document.getElementById("result").innerHTML = "Error loading data.";
+console.log(error);
+}
+
+}
+
+// UNLOCK
+function unlockAccess(){
+paidUser = true;
+document.getElementById("paymentSection").style.display = "none";
+showResult();
+}
+
+// 🎤 VOICE INPUT
+function startVoice(){
+
+if (!('webkitSpeechRecognition' in window)) {
+alert("Use Chrome browser");
+return;
+}
+
+const recognition = new webkitSpeechRecognition();
+recognition.lang = "en-IN";
+recognition.start();
+
+document.getElementById("voiceStatus").innerText = "Listening...";
+
+recognition.onresult = function(event){
+
+let speech = event.results[0][0].transcript.toLowerCase();
+
+document.getElementById("voiceStatus").innerText = speech;
+
+if(speech.includes("vision")) document.getElementById("disability").value="Vision";
+if(speech.includes("hearing")) document.getElementById("disability").value="Hearing";
+if(speech.includes("mobility")) document.getElementById("disability").value="Mobility";
+if(speech.includes("speech")) document.getElementById("disability").value="Speech";
+
+if(speech.includes("reading")) document.getElementById("task").value="Reading";
+if(speech.includes("communication")) document.getElementById("task").value="Communication";
+if(speech.includes("navigation")) document.getElementById("task").value="Navigation";
+
+showResult();
+
+};
+
+}
+
+// 🔊 VOICE OUTPUT
+function speak(text){
+let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "en-IN";
+speechSynthesis.speak(msg);
+}
+
+</script>
+
+</body>
+</html>
