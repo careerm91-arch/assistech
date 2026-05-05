@@ -248,7 +248,7 @@ output="No results found.";
 }
 
 document.getElementById("result").innerHTML = output;
-
+speak("Showing results for " + d + " " + t);
 }catch(error){
 document.getElementById("result").innerHTML = "Error loading data.";
 console.log(error);
