@@ -1,65 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Assistech Finder</title>
-
-<style>
-body{
-font-family: Arial;
-text-align:center;
-padding:20px;
-}
-
-input, button, select{
-padding:10px;
-margin:10px;
-font-size:16px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h2>ASSISTECH FINDER</h2>
-
-<select id="disability">
-<option>Vision</option>
-<option>Hearing</option>
-<option>Mobility</option>
-<option>Speech</option>
-<option>Cognitive</option>
-</select>
-
-<br>
-
-<select id="task">
-<option>Reading</option>
-<option>Communication</option>
-<option>Navigation</option>
-<option>Phone Control</option>
-<option>Learning</option>
-</select>
-
-
-
-<button onclick="startVoice()">🎤 Speak</button>
-<p id="voiceStatus"></p>
-
-
-
-<button onclick="showResult()">Find Assistive Apps</button>
-
-<div id="result"></div>
-
-
-// SIMPLE RESULT FUNCTION (TEST FIRST)
 <script>
+
+// ===== RESULT FUNCTION =====
 async function showResult(){
 
 try{
 
 let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
+
 let response = await fetch(url);
 let data = await response.text();
 
@@ -102,8 +49,8 @@ console.log(error);
 }
 
 }
-<script>
-// VOICE INPUT
+
+// ===== VOICE INPUT =====
 function startVoice(){
 
 if (!('webkitSpeechRecognition' in window)) {
@@ -134,15 +81,11 @@ showResult();
 };
 
 }
-<script>
-// VOICE OUTPUT
+
+// ===== VOICE OUTPUT =====
 function speak(text){
 let msg = new SpeechSynthesisUtterance(text);
 speechSynthesis.speak(msg);
 }
 
 </script>
-
-</body>
-</html>
-</html>
