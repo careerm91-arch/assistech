@@ -257,6 +257,7 @@ console.log(error);
 }
 function speak(text){
 let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "en-IN";
 speechSynthesis.speak(msg);
 }
 // UNLOCK AFTER PAYMENT (MANUAL)
