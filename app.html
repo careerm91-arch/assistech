@@ -1,3 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Assistech Finder</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+padding:20px;
+background:#f5f5f5;
+}
+
+input, button, select{
+padding:10px;
+margin:10px;
+font-size:16px;
+}
+
+button{
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+#result{
+margin-top:20px;
+background:white;
+padding:15px;
+border-radius:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>ASSISTECH FINDER</h2>
+
+<select id="disability">
+<option>Vision</option>
+<option>Hearing</option>
+<option>Mobility</option>
+<option>Speech</option>
+<option>Cognitive</option>
+</select>
+
+<br>
+
+<select id="task">
+<option>Reading</option>
+<option>Communication</option>
+<option>Navigation</option>
+<option>Phone Control</option>
+<option>Learning</option>
+</select>
+
+<br>
+
+<button onclick="startVoice()">🎤 Speak</button>
+<p id="voiceStatus"></p>
+
+<br>
+
+<button onclick="showResult()">Find Assistive Apps</button>
+
+<div id="result"></div>
+
+<!-- ✅ SINGLE CLEAN SCRIPT BLOCK -->
 <script>
 
 // ===== RESULT FUNCTION =====
@@ -38,7 +109,7 @@ output="No results found.";
 
 document.getElementById("result").innerHTML = output;
 
-// 🔊 Voice
+// 🔊 Voice output
 speak("Showing results for " + d + " " + t);
 
 }catch(error){
@@ -76,6 +147,7 @@ if(speech.includes("mobility")) document.getElementById("disability").value="Mob
 
 if(speech.includes("reading")) document.getElementById("task").value="Reading";
 if(speech.includes("communication")) document.getElementById("task").value="Communication";
+if(speech.includes("navigation")) document.getElementById("task").value="Navigation";
 
 showResult();
 };
@@ -85,7 +157,11 @@ showResult();
 // ===== VOICE OUTPUT =====
 function speak(text){
 let msg = new SpeechSynthesisUtterance(text);
+msg.lang = "en-IN";
 speechSynthesis.speak(msg);
 }
 
 </script>
+
+</body>
+</html>
