@@ -84,6 +84,74 @@ margin-top:20px;
 </select>
 
 <br>
+<button onclick="startVoice()">🎤 Speak</button>
+<p id="voiceStatus"></p>
+
+// VOICE RECOGNITION
+function startVoice(){
+
+if (!('webkitSpeechRecognition' in window)) {
+alert("Voice not supported in this browser. Use Chrome.");
+return;
+}
+
+const recognition = new webkitSpeechRecognition();
+recognition.lang = "en-IN";
+recognition.start();
+
+document.getElementById("voiceStatus").innerText = "Listening...";
+
+recognition.onresult = function(event){
+
+let speech = event.results[0][0].transcript.toLowerCase();
+
+document.getElementById("voiceStatus").innerText = "You said: " + speech;
+
+// MATCH DISABILITY
+if(speech.includes("vision")){
+document.getElementById("disability").value = "Vision";
+}
+else if(speech.includes("hearing")){
+document.getElementById("disability").value = "Hearing";
+}
+else if(speech.includes("mobility")){
+document.getElementById("disability").value = "Mobility";
+}
+else if(speech.includes("speech")){
+document.getElementById("disability").value = "Speech";
+}
+else if(speech.includes("cognitive")){
+document.getElementById("disability").value = "Cognitive";
+}
+
+// MATCH TASK
+if(speech.includes("reading")){
+document.getElementById("task").value = "Reading";
+}
+else if(speech.includes("communication")){
+document.getElementById("task").value = "Communication";
+}
+else if(speech.includes("navigation")){
+document.getElementById("task").value = "Navigation";
+}
+else if(speech.includes("learning")){
+document.getElementById("task").value = "Learning";
+}
+else if(speech.includes("phone")){
+document.getElementById("task").value = "Phone Control";
+}
+
+// AUTO SEARCH
+showResult();
+
+};
+
+recognition.onerror = function(){
+document.getElementById("voiceStatus").innerText = "Error in voice recognition";
+};
+
+}
+
 
 <button onclick="showResult()">Find Assistive Apps</button>
 
@@ -162,7 +230,7 @@ let more = apps.slice(3);
 
 // SHOW TOP 3
 output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
-
+speak("Showing results for " + d + " " + t);
 // IF PAID → SHOW MORE
 if(paidUser){
 output += "<br><br><b>More Apps:</b><br>" + more.join("<br>");
@@ -186,7 +254,10 @@ console.log(error);
 }
 
 }
-
+function speak(text){
+let msg = new SpeechSynthesisUtterance(text);
+speechSynthesis.speak(msg);
+}
 // UNLOCK AFTER PAYMENT (MANUAL)
 function unlockAccess(){
 paidUser = true;
