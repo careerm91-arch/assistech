@@ -69,7 +69,7 @@ border-radius:10px;
 <div id="result"></div>
 
 <script>
-
+let fullAppsList = [];//added new
 // ===== RESULT FUNCTION =====
 async function showResult(){
 
@@ -96,9 +96,18 @@ if(r[0].trim().toLowerCase() === d.toLowerCase() &&
    r[1].trim().toLowerCase() === t.toLowerCase()){
 
 let apps = r.slice(2);
-
+fullAppsList = apps;//added new
 let top3 = apps.slice(0,3);
 let more = apps.slice(3);
+
+output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
+
+// ✅ ADD THIS BLOCK
+if(more.length > 0){
+output += `<br><br>
+<button onclick="unlockApps()">🔓 Unlock More Apps</button>`;
+}
+
 
 // UI OUTPUT
 output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
@@ -178,7 +187,25 @@ let msg = new SpeechSynthesisUtterance(text);
 msg.lang = "en-IN";
 speechSynthesis.speak(msg);
 }
+function unlockApps(){
 
+let qrHTML = `
+<h3>Scan & Pay ₹50</h3>
+<img src="qr.jpg" width="250"><br><br>
+
+<button onclick="confirmPayment()">✅ I Have Paid</button>
+`;
+
+document.getElementById("result").innerHTML = qrHTML;
+
+}
+function confirmPayment(){
+
+let fullListHTML = "<b>All Apps:</b><br>" + fullAppsList.join("<br>");
+
+document.getElementById("result").innerHTML = fullListHTML;
+
+}
 </script>
 
 </body>
