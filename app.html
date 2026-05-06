@@ -184,16 +184,24 @@ speechSynthesis.speak(msg);
 function unlockApps(){ 
 
 let qrHTML = `
-<h3>Scan & Pay ₹500</h3>
+<h3>💳 Scan & Pay ₹500</h3>
 
 <img src="qr.png" width="250"><br><br>
 
-<p><b>UPI ID:</b><br>
-pbridgeconsultancyprivatelimited.eazypay@icici</p>
+<div style="background:#f0f0f0;padding:10px;border-radius:8px;display:inline-block;">
+<b>UPI ID:</b><br>
+pbridgeconsultancyprivatelimited.eazypay@icici
+</div>
 
-<p style="color:green;"><b>After payment, click below:</b></p>
+<br><br>
 
-<button onclick="confirmPayment()">✅ I Have Paid</button>
+<p><b>Enter UTR / Transaction ID:</b></p>
+
+<input type="text" id="utr" placeholder="Enter UTR number" style="padding:8px;width:200px;"><br><br>
+
+<button onclick="verifyPayment()">Verify Payment</button>
+
+<p id="paymentStatus" style="color:red;"></p>
 `;
 
 document.getElementById("result").innerHTML = qrHTML;
