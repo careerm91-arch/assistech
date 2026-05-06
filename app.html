@@ -72,72 +72,7 @@ border-radius:10px;
 
 
 // ===== RESULT FUNCTION =====
-/*async function showResult(){
 
-try{
-
-let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpdqK1vK59YwIgtHuYqjrIAmXXLelPIuqFmB4mPMisWlwHZ8ONbdh_YxZ8gu9_XmrC4t5uN0u_atGf/pub?output=csv";
-
-let response = await fetch(url);
-let data = await response.text();
-
-let rows = data.trim().split("\n").map(r => r.split(","));
-
-let d = document.getElementById("disability").value;
-let t = document.getElementById("task").value;
-
-let output = "";
-
-rows.forEach((r, index) => {
-
-if(index === 0) return;
-
-if(r[0].trim().toLowerCase() === d.toLowerCase() &&
-   r[1].trim().toLowerCase() === t.toLowerCase()){
-
-let apps = r.slice(2);
-
-output = "<b>Apps:</b><br>" + apps.join("<br>");
-
-}
-
-});
-
-if(output==""){
-output="No results found.";
-}
-
-document.getElementById("result").innerHTML = output;
-
-// 🔊 Voice output
-let apps = r.slice(2);
-
-let top3 = apps.slice(0,3);
-let more = apps.slice(3);
-
-output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
-
-if(more.length > 0){
-output += "<br><br><b>More Apps:</b><br>🔒 Unlock to view more";
-}
-
-// 🔊 SPEAK BOTH
-let speechText = "Top apps for " + d + " and " + t + " are " + top3.join(", ");
-
-if(more.length > 0){
-speechText += ". More apps are locked.";
-}
-
-speak(speechText);
-
-}catch(error){
-
-document.getElementById("result").innerHTML = "Error loading data.";
-console.log(error);
-
-}
-
-}*/
 <script>
 async function showResult(){
 
