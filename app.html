@@ -96,6 +96,12 @@ if(r[0].trim().toLowerCase() === d.toLowerCase() &&
    r[1].trim().toLowerCase() === t.toLowerCase()){
 
 let apps = r.slice(2);
+let isPaid = localStorage.getItem("paidUser");
+if(isPaid === "yes"){
+output = "<b>All Apps:</b><br>" + apps.join("<br>");
+speechText = "Showing all apps";
+return;
+}
 fullAppsList = apps;//added new
 let top3 = apps.slice(0,3);
 let more = apps.slice(3);
@@ -233,6 +239,9 @@ confirmPayment();
 
 }
 function confirmPayment(){
+
+// ✅ SAVE PAYMENT STATUS
+localStorage.setItem("paidUser", "yes");
 
 let fullListHTML = "<b>All Apps:</b><br>" + fullAppsList.join("<br>");
 
