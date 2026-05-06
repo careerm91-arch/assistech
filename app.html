@@ -207,6 +207,31 @@ pbridgeconsultancyprivatelimited.eazypay@icici
 document.getElementById("result").innerHTML = qrHTML;
 
 }
+function verifyPayment(){
+
+let utr = document.getElementById("utr").value.trim();
+
+// ✅ Basic validation
+if(utr.length < 8){
+document.getElementById("paymentStatus").innerText = "❌ Invalid UTR. Please enter correct ID.";
+return;
+}
+
+// ✅ OPTIONAL: Add your own valid UTR for testing
+if(utr === "TEST12345"){
+confirmPayment();
+return;
+}
+
+// ⚠️ Simulated approval
+document.getElementById("paymentStatus").innerText = "⏳ Verifying payment...";
+
+// Simulate delay
+setTimeout(() => {
+confirmPayment();
+}, 1500);
+
+}
 function confirmPayment(){
 
 let fullListHTML = "<b>All Apps:</b><br>" + fullAppsList.join("<br>");
