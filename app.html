@@ -110,14 +110,32 @@ output="No results found.";
 document.getElementById("result").innerHTML = output;
 
 // 🔊 Voice output
-speak("Showing results for " + d + " " + t);
+let apps = r.slice(2);
 
-}catch(error){
+let top3 = apps.slice(0,3);
+let more = apps.slice(3);
 
-document.getElementById("result").innerHTML = "Error loading data.";
-console.log(error);
+output = "<b>Top 3 Apps:</b><br>" + top3.join("<br>");
 
+if(more.length > 0){
+output += "<br><br><b>More Apps:</b><br>🔒 Unlock to view more";
 }
+
+// 🔊 SPEAK BOTH
+let speechText = "Top apps for " + d + " and " + t + " are " + top3.join(", ");
+
+if(more.length > 0){
+speechText += ". More apps are locked.";
+}
+
+speak(speechText);
+
+//}catch(error){
+
+//document.getElementById("result").innerHTML = "Error loading data.";
+//console.log(error);
+
+//}
 
 }
 
